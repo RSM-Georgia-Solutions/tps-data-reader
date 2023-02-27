@@ -120,7 +120,7 @@ namespace TPSReader
 			
 			DataTable retTable = new DataTable();
 			retTable.TableName = _name;
-			retTable.Columns.Add("ID");
+			retTable.Columns.Add("IDX");
 			foreach( TableField tf in _fields ){
 				DataColumn dc = new DataColumn();
 				dc.ColumnName = tf.FieldName;
@@ -134,7 +134,7 @@ namespace TPSReader
 		public DataRow parseRow(int id, ref RandomAccess ra) {
 	        
 			DataRow retRow = _tableDT.NewRow();
-			retRow["ID"] = id;
+			retRow["IDX"] = id;
 	        for (int t = 0; t < _fields.Count; t++) {
 				TableField field = _fields[t];
 	            

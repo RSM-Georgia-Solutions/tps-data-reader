@@ -207,14 +207,17 @@ namespace TPSReader
 				else
 					newFile += fi.Name + "-" + schema.TableName + ".CSV";
 				
-				StreamWriter sw = new StreamWriter(newFile);
+				StreamWriter sw = new StreamWriter(newFile,false, System.Text.Encoding.UTF8);
 				outputFiles.Add(schema.TableID, sw);
 				
 				DataTable dt = schema.BuildEmptyDataTable();
 				string[] columnNames = dt.Columns.Cast<DataColumn>().
-					Select(column => "\"" + column.ColumnName.Replace("\"", "\"\"") + "\"").
-                                  ToArray();
-				outputFiles[schema.TableID].WriteLine(string.Join(",", columnNames));
+					Select(column => "\"" + column.ColumnName
+					.Trim()
+                    .Replace("\n", "").Replace("\r", "")
+					.Replace("\"", "\"\"") + "\"").ToArray();
+				
+				outputFiles[schema.TableID].WriteLine(string.Join(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator, columnNames));
 				dataTables.Add(schema.TableID, dt);
 			}
 			try{
@@ -252,10 +255,14 @@ namespace TPSReader
 								Record.TableDataRecord tdr = new Record.TableDataRecord(record, tableSchemas[recordTableID]);
 							
 								//dataTables[recordTableID].Rows.Add(tdr.TableDataRow.ItemArray);
-								string[] fields = tdr.TableDataRow.ItemArray.Select(field => "\"" + field.ToString().Replace("\"", "\"\"") + "\"").
+								string[] fields = tdr.TableDataRow.ItemArray
+									.Select(field => "\"" + field.ToString()
+									.Trim()
+								.Replace("\n", "").Replace("\r", "")
+								.Replace("\"", "\"\"") + "\"").
                                     								ToArray();
     											
-    							outputFiles[recordTableID].WriteLine(string.Join(",", fields));
+    							outputFiles[recordTableID].WriteLine(string.Join(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator, fields));
 							}
 						}
 						          

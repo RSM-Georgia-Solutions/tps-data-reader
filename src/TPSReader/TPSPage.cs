@@ -119,7 +119,7 @@ namespace TPSReader
 			//set our Randomaccess to the start of this page
 			RandomAccess ra = RandomAccess.GetInstance();
 			byte[] pageData;
-			ra.jumpAbs(addr);
+			ra.jumpAbs(Math.Abs(addr));
 			
 			ra.jumpRelative(13); //skip the header
 			
@@ -134,7 +134,7 @@ namespace TPSReader
 					throw new Exception("Bad RLE DataBlock ( compressed: " + pageSize  + " uncompressed: " + pageSizeUncompressed + " Page Address: " + addr + "Record Count: " + recordCount.ToString() + "): ", ex );
 	            }
 	        } else {
-				pageData = ra.leBytes( pageSize - 13 );
+				pageData = ra.leBytes( Math.Abs(pageSize - 13));
 	        }
 			
 			return pageData;

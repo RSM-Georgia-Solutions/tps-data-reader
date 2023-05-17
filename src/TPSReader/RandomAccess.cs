@@ -16,6 +16,7 @@
  */
 using System;
 using System.IO;
+using System.Runtime.Remoting.Channels;
 
 namespace TPSReader
 {
